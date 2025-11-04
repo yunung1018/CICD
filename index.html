@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 DevOps 練習</title>
+    <style>
+        body { font-family: sans-serif; display: grid; place-items: center; min-height: 90vh; background-color: #f4f4f4; }
+        h1 { color: #333; }
+        p { color: #555; }
+    </style>
+</head>
+<body>
+    <h1> 歡迎來到我的 DevOps 專案！</h1>
+    <p>這個網站是透過 GitHub Actions 自動部署的。</p>
+    <p id="time-stamp">載入時間戳記...</p>
+
+    <script>
+        document.getElementById('time-stamp').innerText = 
+            "最後更新於: " + new Date().toLocaleString('zh-TW');
+    </script>
+</body>
+</html>
