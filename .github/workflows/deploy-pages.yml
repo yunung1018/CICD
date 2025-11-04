@@ -1,0 +1,53 @@
+# 先定義名稱
+name: Deploy Static Website to GitHub Pages
+
+
+# 需要寫下啟動的時機點
+# 當 main 有 push ，需要進行監聽 mian
+
+on:
+  push:
+    branches:
+      - main # 只監聽 main 分支
+
+
+# 決定哪個workflow可以進入到 pages
+permissions :
+  contents : read  # 這是讀取 repository 內容
+  pages : write    # 這是寫入到 GitHub Pages
+  id-token : write # 這是用來進行部署驗證
+
+
+# 設定好job
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # 讓 Action 輸出部署後的網址
+
+    # 運行的虛擬主機 (使用最新的 Ubuntu)
+    runs-on: ubuntu-latest
+
+    # 工作的步驟 (Steps)
+    steps:
+      # 步驟一：抓取您的程式碼
+      # 這樣虛擬主機才能存取到您的 index.html
+      - name: Checkout code
+        uses: actions/checkout@v4 
+
+      # 步驟二：設定 GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 步驟三：打包靜態檔案
+      # 告訴 Action 要部署哪些檔案 (這裡是根目錄 '.' 下的所有檔案)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 上傳根目錄 ('.')
+          path: '.' 
+
+      # 步驟四：部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment # 給這個步驟一個 ID，這就是一開始在URL中的ID
+        uses: actions/deploy-pages@v4
